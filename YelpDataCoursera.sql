@@ -387,7 +387,7 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		Average:
 
 /* i. Do the two groups you chose to analyze have a different distribution of hours? */
-	RESPONSE!
+	-- The businesses in Scotssdale with listed hours 
 
 /* ii. Do the two groups you chose to analyze have a different number of reviews? */
     RESPONSE!
@@ -443,30 +443,37 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 -- (Question i.) Analyzing hours for Scottsdale
 	SELECT b.city,
 		b.name,
-		h.hours
+		h.hours,
+		SUBSTR(hours, 1, 3) dayopen
+		--SUBSTR(hours, CHARINDEX('|',hours)+1, LEN(hours)) timeopen
+		--SUBSTR(hours, POSITION('|',hours)+1, LEN(hours)) timeopen
+		--SUBSTR(hours, LEGNTH(hours) - ) timeopen
+		--None of the above options work because we are using SQLite
 	FROM business b 
-		JOIN hours h ON b.id = h.business_id
+		INNER JOIN category c ON c.business_id = b.id 
+		INNER JOIN hours h ON b.id = h.business_id
 	WHERE city = 'Scottsdale';
+
 		+------------+--------------------------+-----------------------+
 		| city       | name                     | hours                 |
 		+------------+--------------------------+-----------------------+
-		| Scottsdale | Taliesin West            | Monday|8:30-14:30     |
-		| Scottsdale | Taliesin West            | Tuesday|8:30-17:00    |
-		| Scottsdale | Taliesin West            | Friday|8:30-20:00     |
-		| Scottsdale | Taliesin West            | Wednesday|8:30-17:00  |
-		| Scottsdale | Taliesin West            | Thursday|8:30-14:30   |
-		| Scottsdale | Taliesin West            | Sunday|8:30-15:00     |
-		| Scottsdale | Taliesin West            | Saturday|8:30-15:00   |
+		| Scottsdale | Taliesin West            | Monday|8:30-14:30     | 
+		| Scottsdale | Taliesin West            | Tuesday|8:30-17:00    | 5
+		| Scottsdale | Taliesin West            | Friday|8:30-20:00     | 8
+		| Scottsdale | Taliesin West            | Wednesday|8:30-17:00  | 5
+		| Scottsdale | Taliesin West            | Thursday|8:30-14:30   | 2:30
+		| Scottsdale | Taliesin West            | Sunday|8:30-15:00     | 3
+		| Scottsdale | Taliesin West            | Saturday|8:30-15:00   | 3
 
 		| Scottsdale | The Cider Mill           | Monday|10:00-18:00    |
 		| Scottsdale | The Cider Mill           | Tuesday|10:00-18:00   |
-		| Scottsdale | The Cider Mill           | Friday|10:00-20:00    |
-		| Scottsdale | The Cider Mill           | Wednesday|10:00-18:00 |
+		| Scottsdale | The Cider Mill           | Friday|10:00-20:00    | 8
+		| Scottsdale | The Cider Mill           | Wednesday|10:00-18:00 | 6
 		| Scottsdale | The Cider Mill           | Thursday|10:00-20:00  |
 		| Scottsdale | The Cider Mill           | Sunday|11:00-16:00    |
 		| Scottsdale | The Cider Mill           | Saturday|10:00-20:00  |
 
-		| Scottsdale | Scent From Above Company | Friday|6:00-16:00     |
+		| Scottsdale | Scent From Above Company | Friday|6:00-16:00     | 4
 		| Scottsdale | Scent From Above Company | Tuesday|6:00-16:00    |
 		| Scottsdale | Scent From Above Company | Thursday|6:00-16:00   |
 		| Scottsdale | Scent From Above Company | Wednesday|6:00-16:00  |
@@ -477,33 +484,30 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	SELECT b.city,
 		b.name,
 		h.hours,
-		--TO_CHAR(TRIM('#' FROM '%%') AS Day - 1, 'd')
-		--TRIM('#' FROM '%') AS Day
-		c.category
+		SUBSTR(hours, 1, 3) dayopen
 	FROM business b 
 		INNER JOIN category c ON c.business_id = b.id 
 		INNER JOIN hours h ON b.id = h.business_id
-	WHERE c.category = 'Soul Food'
-	ORDER BY hours;
-		+---------------+-------------------------------+-----------------------+-----------+
-		| city          | name                          | hours                 | category  |
-		+---------------+-------------------------------+-----------------------+-----------+
-		| North Randall | Oinky's Pork Chop Heaven      | Monday|6:00-23:00     | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Tuesday|6:00-23:00    | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Friday|6:00-23:00     | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Wednesday|6:00-23:00  | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Thursday|6:00-23:00   | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Sunday|6:00-23:00     | Soul Food |
-		| North Randall | Oinky's Pork Chop Heaven      | Saturday|6:00-23:00   | Soul Food |
+	WHERE c.category = 'Soul Food';
+		+---------------+-------------------------------+-----------------------+---------+
+		| city          | name                          | hours                 | dayopen |
+		+---------------+-------------------------------+-----------------------+---------+
+		| North Randall | Oinky's Pork Chop Heaven      | Monday|6:00-23:00     | Mon     |
+		| North Randall | Oinky's Pork Chop Heaven      | Tuesday|6:00-23:00    | Tue     |
+		| North Randall | Oinky's Pork Chop Heaven      | Friday|6:00-23:00     | Fri     |
+		| North Randall | Oinky's Pork Chop Heaven      | Wednesday|6:00-23:00  | Wed     |
+		| North Randall | Oinky's Pork Chop Heaven      | Thursday|6:00-23:00   | Thu     |
+		| North Randall | Oinky's Pork Chop Heaven      | Sunday|6:00-23:00     | Sun     |
+		| North Randall | Oinky's Pork Chop Heaven      | Saturday|6:00-23:00   | Sat     |
 
-		| Phoenix       | Charlie D's Catfish & Chicken | Monday|11:00-18:00    | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Tuesday|11:00-18:00   | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Friday|11:00-18:00    | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Wednesday|11:00-18:00 | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Thursday|11:00-18:00  | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Sunday|13:00-16:00    | Soul Food |
-		| Phoenix       | Charlie D's Catfish & Chicken | Saturday|11:00-18:00  | Soul Food |
-		+---------------+-------------------------------+-----------------------+-----------+
+		| Phoenix       | Charlie D's Catfish & Chicken | Monday|11:00-18:00    | Mon     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Tuesday|11:00-18:00   | Tue     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Friday|11:00-18:00    | Fri     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Wednesday|11:00-18:00 | Wed     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Thursday|11:00-18:00  | Thu     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Sunday|13:00-16:00    | Sun     |
+		| Phoenix       | Charlie D's Catfish & Chicken | Saturday|11:00-18:00  | Sat     |
+		+---------------+-------------------------------+-----------------------+---------+
 
 -- Taking a look at the highest rated businesses in Scottsdale
 
