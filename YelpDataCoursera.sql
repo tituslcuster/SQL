@@ -387,7 +387,14 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		Average:
 
 /* i. Do the two groups you chose to analyze have a different distribution of hours? */
-	-- The businesses in Scotssdale with listed hours 
+	The businesses in Scotssdale with listed hours show much more variablitiy in their hours while the 'Soul Food' businesses have much more consistant hours.
+	Opening times remain largely the same across all businesses, with the only exceptions coming on weekends.
+	In fact the only changes in opening time occured on Sundays.
+	'The Cider Mill' in Scottsdale and the other 'Charlie Ds Catfish & Chicken' a Soul Food business were the only two businesses with fluctuation in opening time.
+	Closing times displayed the highest range of variablitiy across the entire dataset, but largely for businesses in Scottsdale.
+	Soul Food businesses generally did not change their closing times with only one exception on a single day.
+	'Charlie Ds Catfish & Chicken' had the only closing and opening time fluctuation for a Soul Food business occuring all on Sunday.
+	Two businesses did not have any weekly changes to their hours: 'Scent From Above Company' in Scottsdale and the Soul Food business 'Oinkys Pork Chop Heaven'
 
 /* ii. Do the two groups you chose to analyze have a different number of reviews? */
     RESPONSE!
@@ -458,22 +465,22 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		| city       | name                     | hours                 |
 		+------------+--------------------------+-----------------------+
 		| Scottsdale | Taliesin West            | Monday|8:30-14:30     | 
-		| Scottsdale | Taliesin West            | Tuesday|8:30-17:00    | 5
-		| Scottsdale | Taliesin West            | Friday|8:30-20:00     | 8
-		| Scottsdale | Taliesin West            | Wednesday|8:30-17:00  | 5
-		| Scottsdale | Taliesin West            | Thursday|8:30-14:30   | 2:30
-		| Scottsdale | Taliesin West            | Sunday|8:30-15:00     | 3
-		| Scottsdale | Taliesin West            | Saturday|8:30-15:00   | 3
+		| Scottsdale | Taliesin West            | Tuesday|8:30-17:00    | 
+		| Scottsdale | Taliesin West            | Friday|8:30-20:00     | 
+		| Scottsdale | Taliesin West            | Wednesday|8:30-17:00  | 
+		| Scottsdale | Taliesin West            | Thursday|8:30-14:30   | 
+		| Scottsdale | Taliesin West            | Sunday|8:30-15:00     | 
+		| Scottsdale | Taliesin West            | Saturday|8:30-15:00   | 
 
 		| Scottsdale | The Cider Mill           | Monday|10:00-18:00    |
 		| Scottsdale | The Cider Mill           | Tuesday|10:00-18:00   |
-		| Scottsdale | The Cider Mill           | Friday|10:00-20:00    | 8
-		| Scottsdale | The Cider Mill           | Wednesday|10:00-18:00 | 6
+		| Scottsdale | The Cider Mill           | Friday|10:00-20:00    | 
+		| Scottsdale | The Cider Mill           | Wednesday|10:00-18:00 | 
 		| Scottsdale | The Cider Mill           | Thursday|10:00-20:00  |
 		| Scottsdale | The Cider Mill           | Sunday|11:00-16:00    |
 		| Scottsdale | The Cider Mill           | Saturday|10:00-20:00  |
 
-		| Scottsdale | Scent From Above Company | Friday|6:00-16:00     | 4
+		| Scottsdale | Scent From Above Company | Friday|6:00-16:00     | 
 		| Scottsdale | Scent From Above Company | Tuesday|6:00-16:00    |
 		| Scottsdale | Scent From Above Company | Thursday|6:00-16:00   |
 		| Scottsdale | Scent From Above Company | Wednesday|6:00-16:00  |
