@@ -352,7 +352,7 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 			|         1.5 |              10 |
 			|         1.0 |               5 |
 			+-------------+-----------------+
-			((Total amount of ratings: 395))
+			((Total amount of rated businesses: 395))
 
 			-- Top 
 			Scottsdale 'Top Rated' businesses: 188
@@ -397,11 +397,11 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	Two businesses did not have any weekly changes to their hours: 'Scent From Above Company' in Scottsdale and the Soul Food business 'Oinkys Pork Chop Heaven'
 
 /* ii. Do the two groups you chose to analyze have a different number of reviews? */
-    RESPONSE!
+    Both groups show very different sizes of reviews due to the wide range in sample sizes. 
+	There have been 20,614 reviews in the city of Scottsdale, and there have been 10 reviews for the 'Soul Food' business category.
          
 /* iii. Are you able to infer anything from the location data provided between these two groups? Explain. */
 	RESPONSE!
-
 /* SQL code used for analysis: */
 -- Creating a categorization system for star numbers for ease of analysis
 	SELECT city,
@@ -447,7 +447,8 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	SELECT *
 	FROM business b INNER JOIN hours h ON b.id = h.business_id
 	WHERE b.city = 'Scottsdale'
--- (Question i.) Analyzing hours for Scottsdale
+-- (Question i.) Analyzing hours for each group 
+	-- Scottsdale
 	SELECT b.city,
 		b.name,
 		h.hours,
@@ -487,7 +488,7 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		| Scottsdale | Scent From Above Company | Monday|6:00-16:00     |
 		+------------+--------------------------+-----------------------+
 
--- (Question i.) Analyzing hours for Soul Food
+	-- Soul Food
 	SELECT b.city,
 		b.name,
 		h.hours,
@@ -515,6 +516,16 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		| Phoenix       | Charlie D's Catfish & Chicken | Sunday|13:00-16:00    | Sun     |
 		| Phoenix       | Charlie D's Catfish & Chicken | Saturday|11:00-18:00  | Sat     |
 		+---------------+-------------------------------+-----------------------+---------+
+-- (Question ii.) Analyzing the volume of reviews for each group
+	-- Scottsdale
+	SELECT SUM(review_count) AS Number_of_Reviews
+	FROM business
+	WHERE city = 'Scottsdale'
+	
+	-- Soul Food
+	SELECT SUM(review_count) AS Number_of_Reviews
+	FROM category c INNER JOIN business b ON c.business_id = b.id
+	WHERE category = 'Soul Food';
 
 -- Taking a look at the highest rated businesses in Scottsdale
 
