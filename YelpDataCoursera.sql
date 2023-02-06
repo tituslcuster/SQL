@@ -381,11 +381,6 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		| North Randall | Oinky's Pork Chop Heaven      | Soul Food |   3.0 | Average Rating |
 		+---------------+-------------------------------+-----------+-------+----------------+
 
-	-- Hours of opperation summary
-		Minimum: 
-		Maximum: 
-		Average:
-
 /* i. Do the two groups you chose to analyze have a different distribution of hours? */
 	The businesses in Scotssdale with listed hours show much more variablitiy in their hours while the 'Soul Food' businesses have much more consistant hours.
 	Opening times remain largely the same across all businesses, with the only exceptions coming on weekends.
