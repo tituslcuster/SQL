@@ -396,7 +396,10 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	There have been 20,614 reviews in the city of Scottsdale, and there have been 10 reviews for the 'Soul Food' business category.
          
 /* iii. Are you able to infer anything from the location data provided between these two groups? Explain. */
-	RESPONSE!
+	There is nothing to infer based off of location since both of the two 'Soul Food' businesses are located in seperate cities (North Randall, and Phoenix)
+
+	Attempting to match the constraints of the two 'Soul Food' businesses to the larger sample of Scottsdale businesses produced no crossover of latitude or longitude.
+
 /* SQL code used for analysis: */
 -- Creating a categorization system for star numbers for ease of analysis
 	SELECT city,
@@ -444,18 +447,18 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	WHERE b.city = 'Scottsdale'
 -- (Question i.) Analyzing hours for each group 
 	-- Scottsdale
-	SELECT b.city,
-		b.name,
-		h.hours,
-		SUBSTR(hours, 1, 3) dayopen
-		--SUBSTR(hours, CHARINDEX('|',hours)+1, LEN(hours)) timeopen
-		--SUBSTR(hours, POSITION('|',hours)+1, LEN(hours)) timeopen
-		--SUBSTR(hours, LEGNTH(hours) - ) timeopen
-		--None of the above options work because we are using SQLite
-	FROM business b 
-		INNER JOIN category c ON c.business_id = b.id 
-		INNER JOIN hours h ON b.id = h.business_id
-	WHERE city = 'Scottsdale';
+		SELECT b.city,
+			b.name,
+			h.hours,
+			SUBSTR(hours, 1, 3) dayopen
+			--SUBSTR(hours, CHARINDEX('|',hours)+1, LEN(hours)) timeopen
+			--SUBSTR(hours, POSITION('|',hours)+1, LEN(hours)) timeopen
+			--SUBSTR(hours, LEGNTH(hours) - ) timeopen
+			--None of the above options work because we are using SQLite
+		FROM business b 
+			INNER JOIN category c ON c.business_id = b.id 
+			INNER JOIN hours h ON b.id = h.business_id
+		WHERE city = 'Scottsdale';
 
 		+------------+--------------------------+-----------------------+
 		| city       | name                     | hours                 |
@@ -484,14 +487,14 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		+------------+--------------------------+-----------------------+
 
 	-- Soul Food
-	SELECT b.city,
-		b.name,
-		h.hours,
-		SUBSTR(hours, 1, 3) dayopen
-	FROM business b 
-		INNER JOIN category c ON c.business_id = b.id 
-		INNER JOIN hours h ON b.id = h.business_id
-	WHERE c.category = 'Soul Food';
+		SELECT b.city,
+			b.name,
+			h.hours,
+			SUBSTR(hours, 1, 3) dayopen
+		FROM business b 
+			INNER JOIN category c ON c.business_id = b.id 
+			INNER JOIN hours h ON b.id = h.business_id
+		WHERE c.category = 'Soul Food';
 		+---------------+-------------------------------+-----------------------+---------+
 		| city          | name                          | hours                 | dayopen |
 		+---------------+-------------------------------+-----------------------+---------+
@@ -521,6 +524,42 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	SELECT SUM(review_count) AS Number_of_Reviews
 	FROM category c INNER JOIN business b ON c.business_id = b.id
 	WHERE category = 'Soul Food';
+
+-- (Question iii.) Analyzing location data for inference
+	-- Scottsdale lat. and long. (trying to adjust for Soul Food lat and long)
+		SELECT DISTINCT b.name,
+			b.address,
+			b.latitude,
+			b.longitude
+		FROM business b 
+			--INNER JOIN category c ON c.business_id = b.id 
+		WHERE city = 'Scottsdale'
+			AND latitude < 42
+			AND latitude > 33
+			AND longitude < 113
+			AND longitude > 81;
+
+		+------+---------+----------+-----------+
+		| name | address | latitude | longitude |
+		+------+---------+----------+-----------+
+		+------+---------+----------+-----------+
+		(Zero rows)
+
+
+	-- Soul Food lat. and long.
+		SELECT DISTINCT b.name,
+			b.latitude,
+			b.longitude
+		FROM business b 
+			INNER JOIN category c ON c.business_id = b.id 
+		WHERE c.category = 'Soul Food';
+
+		+-------------------------------+----------+-----------+
+		| name                          | latitude | longitude |
+		+-------------------------------+----------+-----------+
+		| Oinky's Pork Chop Heaven      |  41.4352 |  -81.5214 |
+		| Charlie D's Catfish & Chicken |  33.4468 |  -112.057 |
+		+-------------------------------+----------+-----------+
 
 -- Taking a look at the highest rated businesses in Scottsdale
 
