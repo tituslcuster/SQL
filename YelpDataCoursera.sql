@@ -304,7 +304,7 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 		LIMIT 10;
 	
 	-- Copy and Paste the Result Below:
-	/*
+	
 		+-----------+--------------+------+
 		| name      | review_count | fans |
 		+-----------+--------------+------+
@@ -319,7 +319,7 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 		| Fran      |          862 |  124 |
 		| Lissa     |          834 |  120 |
 		+-----------+--------------+------+
-	*/
+	
 		
   -----------------------------------
 --| Part 2: Inferences and Analysis |--
@@ -366,11 +366,6 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 			Scottsdale 'Low Rating' businesses: 15
 			Scottsdale 1 star businesses: 5 (146 total reviews)
 		Total number of Yelp reviews in Scottsdale: 20,614
-
-	-- Hours of opperation summary
-		Minimum: 
-		Maximum: 
-		Average:
 
 -- Soul Food
 	-- There are only two 'Soul Food' businesses
@@ -633,7 +628,7 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	ORDER BY stars DESC;
 
 ---------
--- I would have used both of the queries above to create views for further querying but was limited by using the in-browser querying with Coursera. Here is what it would have looked like:
+-- I would have used both of the queries above to create views for further querying but was limited by using the in-browser querying with Coursera (this also might be because of SQLite). Here is what it would have looked like:
 	CREATE VIEW Scottsdale_Rating
 	AS
 		SELECT city,
@@ -710,7 +705,9 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 
 
 
-
+---------
+---------
+---------
 	
 /* 3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis. */
 
