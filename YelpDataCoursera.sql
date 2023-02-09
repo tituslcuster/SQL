@@ -330,8 +330,11 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 -- My choices for further analysis
 		City: Scottsdale
 		Category: Soul Food
-		2-3 stars = 'Top Rated'
-		4-5 stars = 'Top Rated'
+		4.0 - 5.0 stars = 'Top Rated'
+		2.0 - 3.9 stars = 'Average Rating'
+		1.0 - 1.9 stars = 'Low Rating'
+
+** NOTE REGARDING 'StarCategories': Values are derived from a count of businesses that have a finalized star rating independant of the review count. This means that the total count of these queries should amount back to the total amount of businesses in the database (10,000).**
 
 --- Summary Data ---
 Average Soul Food Rating: 3.75 ('Top Rated' Category)
@@ -673,7 +676,8 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	Explore the following for analysis:
 		1. number of reviews
 		2. spread of stars
-		3. hours of opperation
+	
+	For further analysis (if you so choose :D)
 		4. category
 		5. state
 	
@@ -689,15 +693,17 @@ A great measure for further analysis would be the volume of reviews written duri
 Fortunatly the next difference will give some insight as it relates to this dataset!
          
 /* ii. Difference 2: */
+** NOTE: The following numbers are derived from a count of businesses that have a finalized star rating independant of the review count. This means that the total count of these queries should amount back to the total amount of businesses in the database (10,000).**
 
+Unsuprisingly, open businesses had more 'top' ratings than closed businesses did, but what did suprise was the low volume of 'low' rating businesses that were closed. The largest grouping of ratings for closed businesses came from the 'average' category. Most likely this happened as a result of 'average' containing a wider spread of ratings (spanning two ratings!) skewing it slightly, but a mere 38 'low' rated businesses really displays just how far off my assumptions about review score were as they relates to businesses success. Based soley off of these numbers it looks like there is no discernable correlation between being rated 'low' and your business closing as it pertains to this dataset alone.
 
-	Low Rated Open:
-	Average Rated Open:
-	Top Rated Open:
+	Low Rated Open: 324
+	Average Rated Open: 3,801
+	Top Rated Open: 4,355
 	-----
-	Low Rated Closed:
-	Average Rated Closed:
-	Top Rated Closed:
+	Low Rated Closed: 38
+	Average Rated Closed: 829
+	Top Rated Closed: 653
 
          
 /* SQL code used for analysis: */
@@ -724,8 +730,8 @@ Fortunatly the next difference will give some insight as it relates to this data
 		+-------------+--------------+
 		| Open/Closed | Review_Count |
 		+-------------+--------------+
-		| Open        |       269300 |
-		| Closed      |        35261 |
+		| Open        |      269,300 |
+		| Closed      |       35,261 |
 		+-------------+--------------+
 
 -- Examining spread of stars
