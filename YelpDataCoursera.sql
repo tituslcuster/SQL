@@ -666,19 +666,17 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 /* 2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer. */
 
 -- Summary Data --
-	Closed businesses: 1520
-	Open businesses: 8480
-	Total businesses: 10000
+	Closed businesses: 1,520 (35,261 reviews)
+	Open businesses: 8,480 (269,300 reviews)
+		(Total businesses: 10,000)
 
 	Explore the following for analysis:
 		1. number of reviews
 		2. spread of stars
-		3. address (location)
-		4. hours of opperation
-		5. category
-		6. state
-		7. city
-
+		3. hours of opperation
+		4. category
+		5. state
+	
 /* i. Difference 1: */
 
          
@@ -690,19 +688,32 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	SELECT DISTINCT is_open
 	FROM business
 
-	SELECT name,
-		is_open
+	SELECT COUNT(name)
 	FROM business
-	WHERE is_open = 0
+	-- WHERE is_open = 0
+	-- WHERE is_open = 1
 
-	SELECT name,
-		is_open
+-- Examining number of reviews 
+	SELECT SUM(review_count) AS Review_Count,
+		CASE 
+			WHEN is_open = 1 THEN 'Open'
+			WHEN is_open = 0 THEN 'Closed'
+			ELSE 'Unknown Status'
+		END AS 'Open/Closed'
 	FROM business
+	GROUP BY is_open
+	ORDER BY Review_Count DESC;
 
+	+--------------+-------------+
+	| Review_Count | Open/Closed |
+	+--------------+-------------+
+	|       269300 | Open        |
+	|        35261 | Closed      |
+	+--------------+-------------+
 
--- (Question i.)
--- (Question ii.)
+-- Examining spread of stars
 
+--
 
 
 ---------
