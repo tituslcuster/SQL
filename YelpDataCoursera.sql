@@ -678,11 +678,27 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		5. state
 	
 /* i. Difference 1: */
+The disparity in number of reviews as it relates to closed vs. open businesses is quite vast. Here are two reasons that I would infer:
+	1. There are more open businesses than closed businesses
+	2. Open businesses are still generating new reviews and closed businesses are not
 
+There is no limit to the ammount of reviews that any one business could potentially generate compared to another, but when a business is closed that progress is frozen in time creating a widening disparity between open and closed.
+
+A great measure for further analysis would be the volume of reviews written during final three to four months of a business before it closes. Are there more reviews written (likely due to a potential flaw or vulnerabilty of their business), or would reviews plumet as a result of wanning interest by patrons?
+
+Fortunatly the next difference will give some insight as it relates to this dataset!
          
 /* ii. Difference 2: */
-         
-         
+
+
+	Low Rated Open:
+	Average Rated Open:
+	Top Rated Open:
+	-----
+	Low Rated Closed:
+	Average Rated Closed:
+	Top Rated Closed:
+
          
 /* SQL code used for analysis: */
 	SELECT DISTINCT is_open
@@ -694,26 +710,86 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 	-- WHERE is_open = 1
 
 -- Examining number of reviews 
-	SELECT SUM(review_count) AS Review_Count,
+	SELECT 
 		CASE 
 			WHEN is_open = 1 THEN 'Open'
 			WHEN is_open = 0 THEN 'Closed'
 			ELSE 'Unknown Status'
-		END AS 'Open/Closed'
+		END AS 'Open/Closed',
+		SUM(review_count) AS Review_Count
 	FROM business
 	GROUP BY is_open
 	ORDER BY Review_Count DESC;
 
-	+--------------+-------------+
-	| Review_Count | Open/Closed |
-	+--------------+-------------+
-	|       269300 | Open        |
-	|        35261 | Closed      |
-	+--------------+-------------+
+		+-------------+--------------+
+		| Open/Closed | Review_Count |
+		+-------------+--------------+
+		| Open        |       269300 |
+		| Closed      |        35261 |
+		+-------------+--------------+
 
 -- Examining spread of stars
+	SELECT COUNT(name) AS 'Low Rated & Open Businesses'
+	FROM business
+	WHERE is_open = 1
+		AND stars < 2
+		+-----------------------------+
+		| Low Rated & Open Businesses |
+		+-----------------------------+
+		|                         324 |
+		+-----------------------------+
+	
+	SELECT COUNT(name) AS 'Average Rated & Open Businesses'
+	FROM business
+	WHERE is_open = 1
+		AND stars < 4 
+		AND stars >= 2
+		+---------------------------------+
+		| Average Rated & Open Businesses |
+		+---------------------------------+
+		|                            3801 |
+		+---------------------------------+
 
---
+	SELECT COUNT(name) AS 'Top Rated & Open Businesses'
+	FROM business
+	WHERE is_open = 1
+		AND stars >= 4
+		+-----------------------------+
+		| Top Rated & Open Businesses |
+		+-----------------------------+
+		|                        4355 |
+		+-----------------------------+
+
+	SELECT COUNT(name) AS 'Low Rated & Closed Businesses'
+	FROM business
+	WHERE is_open = 0
+		AND stars < 2
+		+-------------------------------+
+		| Low Rated & Closed Businesses |
+		+-------------------------------+
+		|                            38 |
+		+-------------------------------+
+
+	SELECT COUNT(name) AS 'Average Rated & Closed Businesses'
+	FROM business
+	WHERE is_open = 0
+		AND stars < 4 
+		AND stars >= 2
+		+-----------------------------------+
+		| Average Rated & Closed Businesses |
+		+-----------------------------------+
+		|                               829 |
+		+-----------------------------------+
+
+	SELECT COUNT(name) AS 'Top Rated & Closed Businesses'
+	FROM business
+	WHERE is_open = 0
+		AND stars >= 4
+		+-------------------------------+
+		| Top Rated & Closed Businesses |
+		+-------------------------------+
+		|                           653 |
+		+-------------------------------+
 
 
 ---------
