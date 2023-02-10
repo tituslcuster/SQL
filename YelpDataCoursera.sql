@@ -677,10 +677,6 @@ Average Scottsdale Rating: 3.95 ('Average Rating' Category)
 		1. number of reviews
 		2. spread of stars
 	
-	For further analysis (if you so choose :D)
-		4. category
-		5. state
-	
 /* i. Difference 1: */
 The disparity in number of reviews as it relates to closed vs. open businesses is quite vast. Here are two reasons that I would infer:
 	1. There are more open businesses than closed businesses
@@ -805,23 +801,254 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 /* 3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis. */
 
 /* Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. */
-
--- Provide answers, in-line, to all of the following: 
 	
 /* i. Indicate the type of analysis you chose to do: */
-         
+         I will be clustering businesses around categories of stars in order to find commonalities and anomalies between them.
+
+		 The star categories are as following:
+				  5.0 stars = 'Premium Rated'
+			4.0 - 4.9 stars = 'Top Rated'
+			3.0 - 3.9 stars = 'High Rating'
+			2.0 - 2.9 stars = 'Average Rating'
+			1.0 - 1.9 stars = 'Low Rating'
          
 /* ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data: */
-                           
+	 Comparisons will be ran between city, state, and open/closed status. 
+	 
+	 City and state provide different geographical contexts for business success which I am sure will have some degree of variance for comparision with such a large volume of businesses to draw from at the city or state level. Open and closed status of the business will create even more intriguing insight into the lifecycle of businesses within this dataset. My previous assumptions about open/closed status was challenged in the last question, so I anticipate even more suprises moving forward. 
+	 
+	Without diving into the data my assumptions are that there will be only slight variance at the state level, while cities will see much higher variance in star category. Since I am now adding a split between 'average' and 'high' I would bet that most closed businesses would be in the 'average' category despite the data displaying their absence from the 'low' category.
                   
 /* iii. Output of your finished dataset: */
-         
-         
+	None of the businesses within the top 10 most reviewed on Yelp had anything above a 4.5. The same group didnt dip past 2.5 as the lowest rating. I would infer that this range of rating could be the result of the prime motivator behind a consumer reviewing a business on Yelp. The main reasons why a consumer would take time to review a business on Yelp is because they had an experience that they wanted to share with other people. While average ratings for businesses might display more volume in the 'average' and 'low' categories, an area for further analysis would be if individual reviews tend more towards wide swings in star category compared to the average rating of the business.
+
+
 /* iv. Provide the SQL code you used to create your final dataset: */
+	SELECT city
+		,name
+		,stars
+		,is_open
+		--c.category
+		,CASE
+			WHEN stars = 5 THEN 'Premium Rated'
+			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
+			WHEN stars >= 3 AND stars < 4 THEN 'High Rating'
+			WHEN stars >= 2 AND stars < 3 THEN 'Average Rating'
+			WHEN stars >= 1 AND stars < 2 THEN 'Low Rating'
+			ELSE 'This is weird.. check on this one'
+		END AS 'StarCategory'
+	FROM business
+	--FROM category c INNER JOIN business b ON c.business_id = b.id
+	ORDER BY Star_Category DESC, is_open DESC;
 
 
+-- Closed premium rated businesses  
+	SELECT name
+		,stars
+		,review_count
+		--c.category
+		,CASE
+			WHEN stars = 5 THEN 'Premium Rated'
+			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
+			WHEN stars >= 3 AND stars < 4 THEN 'High Rating'
+			WHEN stars >= 2 AND stars < 3 THEN 'Average Rating'
+			WHEN stars >= 1 AND stars < 2 THEN 'Low Rating'
+			ELSE 'This is weird.. check on this one'
+		END AS 'StarCategory'
+	FROM business
+	WHERE is_open = 0 
+		AND StarCategory = 'Premium Rated'
+	--FROM category c INNER JOIN business b ON c.business_id = b.id
+	ORDER BY stars DESC, review_count DESC;
 
+	+----------------------------------+-------+--------------+---------------+
+	| name                             | stars | review_count | StarCategory  |
+	+----------------------------------+-------+--------------+---------------+
+	| Dethrone Basecamp Fitness Studio |   5.0 |           47 | Premium Rated |
+	| Eleve Training Studios           |   5.0 |           37 | Premium Rated |
+	| 305 Kustoms                      |   5.0 |           28 | Premium Rated |
+	| Imbibe Tours                     |   5.0 |           18 | Premium Rated |
+	| Pet Club Northern                |   5.0 |           17 | Premium Rated |
+	| Mother's Deli & Bakery           |   5.0 |           16 | Premium Rated |
+	| Arizona Painting and Decorating  |   5.0 |           15 | Premium Rated |
+	| The Muffin Girl                  |   5.0 |           15 | Premium Rated |
+	| Great Skin Rules                 |   5.0 |           14 | Premium Rated |
+	| Clothes Minded                   |   5.0 |           13 | Premium Rated |
+	| Oliver & Annie                   |   5.0 |           13 | Premium Rated |
+	| Nectar Natural Infusions         |   5.0 |           11 | Premium Rated |
+	| Your Feel Good Soap Company      |   5.0 |           11 | Premium Rated |
+	| Pick N Puff                      |   5.0 |           10 | Premium Rated |
+	| NextRelic                        |   5.0 |            9 | Premium Rated |
+	| Salon Bespoke                    |   5.0 |            9 | Premium Rated |
+	| AccentU                          |   5.0 |            9 | Premium Rated |
+	| Port of Siam                     |   5.0 |            9 | Premium Rated |
+	| Chic Ink Boutique                |   5.0 |            9 | Premium Rated |
+	| Binz                             |   5.0 |            9 | Premium Rated |
+	| Patrick's Stop                   |   5.0 |            9 | Premium Rated |
+	| ESports Gaming Arena             |   5.0 |            7 | Premium Rated |
+	| J and C Glass Studio             |   5.0 |            7 | Premium Rated |
+	| Las Vegas Hair & Nails           |   5.0 |            7 | Premium Rated |
+	| Chancery Lane Salon              |   5.0 |            7 | Premium Rated |
+	+----------------------------------+-------+--------------+---------------+
+	(Output limit exceeded, 25 of 138 total rows shown)
 
+-- Open premium businesses (same as above but changing the WHERE is_open from '0' to '1')
+	+--------------------------------------+-------+--------------+---------------+
+	| name                                 | stars | review_count | StarCategory  |
+	+--------------------------------------+-------+--------------+---------------+
+	| Green Corner Restaurant              |   5.0 |          267 | Premium Rated |
+	| La Maison de Maggie                  |   5.0 |          260 | Premium Rated |
+	| UpTown Barbershop                    |   5.0 |          176 | Premium Rated |
+	| Master Lock & Security               |   5.0 |          153 | Premium Rated |
+	| Tidy Casa                            |   5.0 |          149 | Premium Rated |
+	| SPEEDVEGAS                           |   5.0 |          125 | Premium Rated |
+	| LasikPlus Vision Center              |   5.0 |          115 | Premium Rated |
+	| Loris Grooming                       |   5.0 |          114 | Premium Rated |
+	| LunchboxWax Scottsdale               |   5.0 |          112 | Premium Rated |
+	| Chula Seafood                        |   5.0 |          106 | Premium Rated |
+	| Las Vegas Collision Center           |   5.0 |          103 | Premium Rated |
+	| Arbor Care Tree Service              |   5.0 |           91 | Premium Rated |
+	| Dog Supplies Outlet                  |   5.0 |           85 | Premium Rated |
+	| Sheffield Spice & Tea Co             |   5.0 |           84 | Premium Rated |
+	| West Coast Tattoo Parlor             |   5.0 |           84 | Premium Rated |
+	| Barefoot Pools Pool Service & Repair |   5.0 |           83 | Premium Rated |
+	| Desert Customs Window Tinting        |   5.0 |           81 | Premium Rated |
+	| Lora Moon Styling                    |   5.0 |           79 | Premium Rated |
+	| Pearl. Dentistry Reimagined          |   5.0 |           79 | Premium Rated |
+	| Just Smiles                          |   5.0 |           79 | Premium Rated |
+	| Camp Bow Wow Avondale                |   5.0 |           79 | Premium Rated |
+	| Doggy Daze                           |   5.0 |           77 | Premium Rated |
+	| Simply Natural Nails                 |   5.0 |           74 | Premium Rated |
+	| Plumbing Kings                       |   5.0 |           73 | Premium Rated |
+	| Phoenix Mountain Animal Hospital     |   5.0 |           72 | Premium Rated |
+	+--------------------------------------+-------+--------------+---------------+
+	(Output limit exceeded, 25 of 1427 total rows shown)
 
+-- Finding a set of businesses with the highest and lowest number of ratings for a better picture of review volume
+	SELECT name, review_count
+	FROM business
+	ORDER BY review_count DESC
+	LIMIT 10;
 
+	+----------------------+--------------+
+	| name                 | review_count |
+	+----------------------+--------------+
+	| The Buffet           |         3873 |
+	| Schwartz's           |         1757 |
+	| Joe's Farm Grill     |         1549 |
+	| Carson Kitchen       |         1410 |
+	| Delmonico Steakhouse |         1389 |
+	| Le Thai              |         1252 |
+	| Scarpetta            |         1116 |
+	| Diablos Cantina     |         1084 |
+	| MGM Grand Buffet     |          961 |
+	| Joyride Taco House   |          902 |
+	+----------------------+--------------+
 
+-- Coupling the last query with star information for categorical insight
+	SELECT name 
+		,review_count
+		,stars
+		,CASE
+			WHEN stars = 5 THEN 'Premium Rated'
+			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
+			WHEN stars >= 3 AND stars < 4 THEN 'High Rating'
+			WHEN stars >= 2 AND stars < 3 THEN 'Average Rating'
+			WHEN stars >= 1 AND stars < 2 THEN 'Low Rating'
+			ELSE 'This is weird.. check on this one'
+		END AS 'StarCategory'
+	FROM business
+	ORDER BY review_count DESC
+	LIMIT 10;
+
+	+----------------------+--------------+-------+----------------+
+	| name                 | review_count | stars | StarCategory   |
+	+----------------------+--------------+-------+----------------+
+	| The Buffet           |         3873 |   3.5 | High Rating    |
+	| Schwartz's           |         1757 |   4.0 | Top Rated      |
+	| Joe's Farm Grill     |         1549 |   4.0 | Top Rated      |
+	| Carson Kitchen       |         1410 |   4.5 | Top Rated      |
+	| Delmonico Steakhouse |         1389 |   4.0 | Top Rated      |
+	| Le Thai              |         1252 |   4.0 | Top Rated      |
+	| Scarpetta            |         1116 |   4.0 | Top Rated      |
+	| Diablos Cantina      |         1084 |   3.0 | High Rating    |
+	| MGM Grand Buffet     |          961 |   2.5 | Average Rating |
+	| Joyride Taco House   |          902 |   4.0 | Top Rated      |
+	+----------------------+--------------+-------+----------------+
+
+-- Adding city and state information for further insight
+		SELECT name 
+		,review_count
+		,stars
+		,CASE
+			WHEN stars = 5 THEN 'Premium Rated'
+			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
+			WHEN stars >= 3 AND stars < 4 THEN 'High Rating'
+			WHEN stars >= 2 AND stars < 3 THEN 'Average Rating'
+			WHEN stars >= 1 AND stars < 2 THEN 'Low Rating'
+			ELSE 'This is weird.. check on this one'
+		END AS 'StarCategory'
+		,state
+		,city
+	FROM business
+	ORDER BY review_count DESC
+	LIMIT 10;
+
+	+----------------------+--------------+-------+----------------+-------+-----------+
+	| name                 | review_count | stars | StarCategory   | state | city      |
+	+----------------------+--------------+-------+----------------+-------+-----------+
+	| The Buffet           |         3873 |   3.5 | High Rating    | NV    | Las Vegas |
+	| Schwartz's           |         1757 |   4.0 | Top Rated      | QC    | Montréal  |
+	| Joe's Farm Grill     |         1549 |   4.0 | Top Rated      | AZ    | Gilbert   |
+	| Carson Kitchen       |         1410 |   4.5 | Top Rated      | NV    | Las Vegas |
+	| Delmonico Steakhouse |         1389 |   4.0 | Top Rated      | NV    | Las Vegas |
+	| Le Thai              |         1252 |   4.0 | Top Rated      | NV    | Las Vegas |
+	| Scarpetta            |         1116 |   4.0 | Top Rated      | NV    | Las Vegas |
+	| Diablos Cantina     |         1084 |   3.0 | High Rating    | NV    | Las Vegas |
+	| MGM Grand Buffet     |          961 |   2.5 | Average Rating | NV    | Las Vegas |
+	| Joyride Taco House   |          902 |   4.0 | Top Rated      | AZ    | Gilbert   |
+	+----------------------+--------------+-------+----------------+-------+-----------+
+
+-- States with the highest stars
+	SELECT state,
+		SUBSTR(AVG(stars),1,4) AS AverageStarRating
+	FROM business
+	GROUP BY state
+	ORDER BY AverageStarRating DESC;
+
+	+-------+-------------------+
+	| state | AverageStarRating |
+	+-------+-------------------+
+	| ST    | 5.0               |
+	| ELN   | 4.16              |
+	| MLN   | 3.87              |
+	| EDH   | 3.78              |
+	| BW    | 3.75              |
+	| PA    | 3.74              |
+	| AZ    | 3.72              |
+	| NV    | 3.72              |
+	| WI    | 3.70              |
+	| FIF   | 3.7               |
+	| HLD   | 3.66              |
+	| NYK   | 3.66              |
+	| QC    | 3.63              |
+	| OH    | 3.58              |
+	| NC    | 3.56              |
+	| SC    | 3.52              |
+	| IL    | 3.50              |
+	| ESX   | 3.5               |
+	| NY    | 3.5               |
+	| WLN   | 3.5               |
+	| ON    | 3.46              |
+	| C     | 3.33              |
+	| NI    | 3.0               |
+	+-------+-------------------+
+
+-- If I could use views I would have created one like I did below and then use StarCategories against it
+	CREATE VIEW AverageStateStars
+	AS	
+		SELECT state,
+			SUBSTR(AVG(stars),1,4) AS AverageStarRating
+		FROM business
+		GROUP BY state
+		ORDER BY AverageStarRating DESC;
