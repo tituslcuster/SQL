@@ -813,11 +813,10 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 			1.0 - 1.9 stars = 'Low Rating'
          
 /* ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data: */
-	 Comparisons will be ran between city, state, and open/closed status. 
+	 For the purposes of this assignment I will be analyzing only the 'premium rated' businesses against the number of reviews that they contain. Comparisons for this analysis project will be ran based city, state, and open/closed status all querying for outliers and summary data to get a good grasp on the larger points of this dataset.
 	 
-	 City and state provide different geographical contexts for business success which I am sure will have some degree of variance for comparision with such a large volume of businesses to draw from at the city or state level. Open and closed status of the business will create even more intriguing insight into the lifecycle of businesses within this dataset. My previous assumptions about open/closed status was challenged in the last question, so I anticipate even more suprises moving forward. 
-	 
-	Without diving into the data my assumptions are that there will be only slight variance at the state level, while cities will see much higher variance in star category. Since I am now adding a split between 'average' and 'high' I would bet that most closed businesses would be in the 'average' category despite the data displaying their absence from the 'low' category.
+ -- My thoughts before diving in
+	 City and state provide different geographical contexts for business success which I am sure will have some degree of variance for comparision with such a large volume of businesses to draw from at the city or state level. Open and closed status of the business will create even more intriguing insight into the lifecycle of businesses within this dataset. My previous assumptions about open/closed status was challenged in the last question, so I anticipate even more suprises moving forward. My assumptions are that there will be only slight variance at the state level, while cities will see much higher variance in star category. Since I am now adding a split between 'average' and 'high' I would bet that most closed businesses would be in the 'average' category despite the data displaying their absence from the 'low' category.
                   
 /* iii. Output of your finished dataset: */
 	None of the businesses within the top 10 most reviewed on Yelp had anything above a 4.5. The same group didnt dip past 2.5 as the lowest rating. I would infer that this range of rating could be the result of the prime motivator behind a consumer reviewing a business on Yelp. The main reasons why a consumer would take time to review a business on Yelp is because they had an experience that they wanted to share with other people. While average ratings for businesses might display more volume in the 'average' and 'low' categories, an area for further analysis would be if individual reviews tend more towards wide swings in star category compared to the average rating of the business.
@@ -828,8 +827,7 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 		,name
 		,stars
 		,is_open
-		--c.category
-		,CASE
+			,CASE
 			WHEN stars = 5 THEN 'Premium Rated'
 			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
 			WHEN stars >= 3 AND stars < 4 THEN 'High Rating'
@@ -838,7 +836,6 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 			ELSE 'This is weird.. check on this one'
 		END AS 'StarCategory'
 	FROM business
-	--FROM category c INNER JOIN business b ON c.business_id = b.id
 	ORDER BY Star_Category DESC, is_open DESC;
 
 
@@ -846,7 +843,6 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	SELECT name
 		,stars
 		,review_count
-		--c.category
 		,CASE
 			WHEN stars = 5 THEN 'Premium Rated'
 			WHEN stars >= 4 AND stars < 5 THEN 'Top Rated'
@@ -858,7 +854,6 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	FROM business
 	WHERE is_open = 0 
 		AND StarCategory = 'Premium Rated'
-	--FROM category c INNER JOIN business b ON c.business_id = b.id
 	ORDER BY stars DESC, review_count DESC;
 
 	+----------------------------------+-------+--------------+---------------+
@@ -924,6 +919,14 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	+--------------------------------------+-------+--------------+---------------+
 	(Output limit exceeded, 25 of 1427 total rows shown)
 
+-- Number of premium businesses by state
+	SELECT
+	FROM
+	WHERE
+-- Number of premium businesses by city
+	SELECT
+	FROM 
+	WHERE
 -- Finding a set of businesses with the highest and lowest number of ratings for a better picture of review volume
 	SELECT name, review_count
 	FROM business
@@ -1004,7 +1007,7 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	| Delmonico Steakhouse |         1389 |   4.0 | Top Rated      | NV    | Las Vegas |
 	| Le Thai              |         1252 |   4.0 | Top Rated      | NV    | Las Vegas |
 	| Scarpetta            |         1116 |   4.0 | Top Rated      | NV    | Las Vegas |
-	| Diablos Cantina     |         1084 |   3.0 | High Rating    | NV    | Las Vegas |
+	| Diablos Cantina      |         1084 |   3.0 | High Rating    | NV    | Las Vegas |
 	| MGM Grand Buffet     |          961 |   2.5 | Average Rating | NV    | Las Vegas |
 	| Joyride Taco House   |          902 |   4.0 | Top Rated      | AZ    | Gilbert   |
 	+----------------------+--------------+-------+----------------+-------+-----------+
@@ -1043,8 +1046,8 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	| C     | 3.33              |
 	| NI    | 3.0               |
 	+-------+-------------------+
-
--- If I could use views I would have created one like I did below and then use StarCategories against it
+----
+---- If I could use views I would have created one like I did below and then use StarCategories against it
 	CREATE VIEW AverageStateStars
 	AS	
 		SELECT state,
@@ -1052,3 +1055,5 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 		FROM business
 		GROUP BY state
 		ORDER BY AverageStarRating DESC;
+----
+--
