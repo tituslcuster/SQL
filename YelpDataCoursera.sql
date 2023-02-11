@@ -143,8 +143,8 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 	GROUP BY city
 	ORDER BY review_count DESC
 	
-	/* Copy and Paste the Result Below:
-			+------------+--------------+
+	/* Copy and Paste the Result Below: */
+		+------------+--------------+
 		| city       | review_count |
 		+------------+--------------+
 		| Las Vegas  |         3873 |
@@ -174,7 +174,6 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 		| Phoenix    |          700 |
 		+------------+--------------+
 		(Output limit exceeded, 25 of 10000 total rows shown)
-	*/
 	
 /* 6. Find the distribution of star ratings to the business in the following cities: */
 
@@ -239,7 +238,7 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 /* 8. Does posing more reviews correlate with more fans? */
 
 	-- Please explain your findings and interpretation of the results:
-	/*	Posting more reviews does not directly correlate with more fans. 
+	Posting more reviews does not directly correlate with more fans. 
 
 		The three users with the highest number	of fans have all posted fewer reviews than the three users with the most reviews. 
 		
@@ -275,9 +274,7 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 					| Fran      |          862 |  124 |
 					| Lissa     |          834 |  120 |
 					+-----------+--------------+------+
-	*/
 
-	
 /* 9. Are there more reviews with the word "love" or with the word "hate" in them? */
 
 	Answer: There were far more who used the word "love" in their review (1780) compared to the
@@ -813,15 +810,17 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 			1.0 - 1.9 stars = 'Low Rating'
          
 /* ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data: */
-	 For the purposes of this assignment I will be analyzing only the 'premium rated' businesses against the number of reviews that they contain. Comparisons for this analysis project will be ran based city, state, and open/closed status all querying for outliers and summary data to get a good grasp on the larger points of this dataset.
+	 For the purposes of this assignment I will be analyzing only the 'premium rated' businesses against the number of reviews that they contain. Comparisons for this analysis project will be ran based on city, state, and open/closed status along with querying for outliers and summary data to get a good grasp on the larger points of this dataset. Sampleing the top ten of different variations of the dataset should be effective in examining the differences that take place at the largest volumes of star category and review count. 
 	 
- -- My thoughts before diving in
+ -- General inferences and hypotheticals
 	 City and state provide different geographical contexts for business success which I am sure will have some degree of variance for comparision with such a large volume of businesses to draw from at the city or state level. Open and closed status of the business will create even more intriguing insight into the lifecycle of businesses within this dataset. My previous assumptions about open/closed status was challenged in the last question, so I anticipate even more suprises moving forward. My assumptions are that there will be only slight variance at the state level, while cities will see much higher variance in star category. Since I am now adding a split between 'average' and 'high' I would bet that most closed businesses would be in the 'average' category despite the data displaying their absence from the 'low' category.
-                  
+	
 /* iii. Output of your finished dataset: */
 	None of the businesses within the top 10 most reviewed on Yelp had anything above a 4.5. The same group didnt dip past 2.5 as the lowest rating. I would infer that this range of rating could be the result of the prime motivator behind a consumer reviewing a business on Yelp. The main reasons why a consumer would take time to review a business on Yelp is because they had an experience that they wanted to share with other people. While average ratings for businesses might display more volume in the 'average' and 'low' categories, an area for further analysis would be if individual reviews tend more towards wide swings in star category compared to the average rating of the business.
 
+	Regardless, among 'premium' businesses review count held a strong correlation with large volume of 'premium' counts across city and state metrics. The city with the most 'premium' businesses (Las Vegas) also held a strong lead ahead of all other cities in review count (diffrences of 48,351 for review count and 560 'premium' businesses). Of course Las Vegas as notable worldwide center for adult entertainment might influence its large lead ahead of other cities and states. The top ten cities displayed slight variability in position of the top ten most premium businesses compared to the ten most reviewed cities, but largely the same cities remained on the list with the exception of Chandler, AZ and Mesa, AZ.
 
+	Similar to what the top ten cities with the highest review count and 'premium' business count revealed, the top ten groupings by state revealed little variability. The three states at the top of the list held the same position across both aggregations. In fact the top nine states were all the same states across review count and 'premium' business count with the only position change occuring at the fourth and fifth spots across lists alternating between North Carolina and Ohio. The tenth spot changed dramatically across lists. This most likely occured due to the same trend affecting both tables: 'premium' businesses do not numerically have a larger decrease in count moving down the list, but their decrease wildly displaces the amount of reviews. As a result of this the number of reviews becomes much less stable as 'premium' volume decreases. This is because the 'TotalNumberOfReviews' column is unaffected by number of stars meaning that the less that the 'premium' can impact the number of reviews, the less likely there will be a correlation between the two constraints.
 /* iv. Provide the SQL code you used to create your final dataset: */
 	SELECT city
 		,name
@@ -919,12 +918,11 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	+--------------------------------------+-------+--------------+---------------+
 	(Output limit exceeded, 25 of 1427 total rows shown)
 
--- Number of premium businesses by state
+-- Top ten states with the most premium businesses
 	SELECT state,
-		COUNT(name) AS Premium_Business_Count,
+		COUNT(stars = 5) AS Premium_Business_Count,
 		SUM(review_count) AS TotalNumberOfReviews
 	FROM  business
-	WHERE stars = 5
 	GROUP BY state
 	ORDER BY Premium_Business_Count DESC
 	LIMIT 10;
@@ -932,24 +930,48 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	+-------+------------------------+----------------------+
 	| state | Premium_Business_Count | TotalNumberOfReviews |
 	+-------+------------------------+----------------------+
-	| AZ    |                    683 |                 8934 |
-	| NV    |                    359 |                 4855 |
-	| ON    |                    129 |                  962 |
-	| NC    |                     91 |                  785 |
-	| OH    |                     89 |                  693 |
-	| PA    |                     76 |                  628 |
-	| WI    |                     39 |                  252 |
-	| QC    |                     32 |                  160 |
-	| EDH   |                     21 |                  141 |
-	| BW    |                     19 |                   90 |
+	| AZ    |                   3042 |               100548 |
+	| NV    |                   1921 |                96494 |
+	| ON    |                   1664 |                36373 |
+	| OH    |                    747 |                14814 |
+	| NC    |                    722 |                17140 |
+	| PA    |                    553 |                13211 |
+	| QC    |                    465 |                10738 |
+	| WI    |                    253 |                 6410 |
+	| EDH   |                    237 |                 2742 |
+	| BW    |                    202 |                 2412 |
 	+-------+------------------------+----------------------+
--- Number of premium businesses by city
+
+-- Top ten states with the most reviews
 	SELECT state,
-		city,
-		COUNT(name) AS Premium_Business_Count,
+		COUNT(stars = 5) AS Premium_Business_Count,
 		SUM(review_count) AS TotalNumberOfReviews
 	FROM  business
-	WHERE stars = 5
+	GROUP BY state
+	ORDER BY TotalNumberOfReviews DESC
+	LIMIT 10;
+	+-------+------------------------+----------------------+
+	| state | Premium_Business_Count | TotalNumberOfReviews |
+	+-------+------------------------+----------------------+
+	| AZ    |                   3042 |               100548 |
+	| NV    |                   1921 |                96494 |
+	| ON    |                   1664 |                36373 |
+	| NC    |                    722 |                17140 |
+	| OH    |                    747 |                14814 |
+	| PA    |                    553 |                13211 |
+	| QC    |                    465 |                10738 |
+	| WI    |                    253 |                 6410 |
+	| EDH   |                    237 |                 2742 |
+	| IL    |                    108 |                 2571 |
+	+-------+------------------------+----------------------+
+
+
+-- Top ten cities with the most premium businesses
+	SELECT state,
+		city,
+		COUNT(stars = 5) AS Premium_Business_Count,
+		SUM(review_count) AS TotalNumberOfReviews
+	FROM  business
 	GROUP BY city
 	ORDER BY Premium_Business_Count DESC
 	LIMIT 10;
@@ -957,16 +979,41 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	+-------+------------+------------------------+----------------------+
 	| state | city       | Premium_Business_Count | TotalNumberOfReviews |
 	+-------+------------+------------------------+----------------------+
-	| NV    | Las Vegas  |                    294 |                 4021 |
-	| AZ    | Phoenix    |                    195 |                 2955 |
-	| AZ    | Scottsdale |                    137 |                 2094 |
-	| ON    | Toronto    |                     94 |                  751 |
-	| AZ    | Mesa       |                     68 |                  917 |
-	| NC    | Charlotte  |                     67 |                  584 |
-	| AZ    | Tempe      |                     58 |                  649 |
-	| AZ    | Gilbert    |                     55 |                  464 |
-	| NV    | Henderson  |                     55 |                  743 |
-	| PA    | Pittsburgh |                     55 |                  514 |
+	| NV    | Las Vegas  |                   1561 |                82854 |
+	| AZ    | Phoenix    |                   1001 |                34503 |
+	| ON    | Toronto    |                    985 |                24113 |
+	| AZ    | Scottsdale |                    497 |                20614 |
+	| NC    | Charlotte  |                    468 |                12523 |
+	| PA    | Pittsburgh |                    353 |                 9798 |
+	| QC    | Montréal   |                    337 |                 9448 |
+	| AZ    | Mesa       |                    304 |                 6875 |
+	| NV    | Henderson  |                    274 |                10871 |
+	| AZ    | Tempe      |                    261 |                10504 |
+	+-------+------------+------------------------+----------------------+
+
+-- Top ten cities with the most reviews
+	SELECT state,
+		city,
+		COUNT(stars = 5) AS Premium_Business_Count,
+		SUM(review_count) AS TotalNumberOfReviews
+	FROM  business
+	GROUP BY city
+	ORDER BY TotalNumberOfReviews DESC
+	LIMIT 10;
+	
+	+-------+------------+------------------------+----------------------+
+	| state | city       | Premium_Business_Count | TotalNumberOfReviews |
+	+-------+------------+------------------------+----------------------+
+	| NV    | Las Vegas  |                   1561 |                82854 |
+	| AZ    | Phoenix    |                   1001 |                34503 |
+	| ON    | Toronto    |                    985 |                24113 |
+	| AZ    | Scottsdale |                    497 |                20614 |
+	| NC    | Charlotte  |                    468 |                12523 |
+	| NV    | Henderson  |                    274 |                10871 |
+	| AZ    | Tempe      |                    261 |                10504 |
+	| PA    | Pittsburgh |                    353 |                 9798 |
+	| QC    | Montréal   |                    337 |                 9448 |
+	| AZ    | Chandler   |                    232 |                 8112 |
 	+-------+------------+------------------------+----------------------+
 -- Finding a set of businesses with the highest and lowest number of ratings for a better picture of review volume
 	SELECT name, review_count
