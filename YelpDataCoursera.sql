@@ -920,13 +920,54 @@ Unsuprisingly, open businesses had more 'top' ratings than closed businesses did
 	(Output limit exceeded, 25 of 1427 total rows shown)
 
 -- Number of premium businesses by state
-	SELECT
-	FROM
-	WHERE
+	SELECT state,
+		COUNT(name) AS Premium_Business_Count,
+		SUM(review_count) AS TotalNumberOfReviews
+	FROM  business
+	WHERE stars = 5
+	GROUP BY state
+	ORDER BY Premium_Business_Count DESC
+	LIMIT 10;
+
+	+-------+------------------------+----------------------+
+	| state | Premium_Business_Count | TotalNumberOfReviews |
+	+-------+------------------------+----------------------+
+	| AZ    |                    683 |                 8934 |
+	| NV    |                    359 |                 4855 |
+	| ON    |                    129 |                  962 |
+	| NC    |                     91 |                  785 |
+	| OH    |                     89 |                  693 |
+	| PA    |                     76 |                  628 |
+	| WI    |                     39 |                  252 |
+	| QC    |                     32 |                  160 |
+	| EDH   |                     21 |                  141 |
+	| BW    |                     19 |                   90 |
+	+-------+------------------------+----------------------+
 -- Number of premium businesses by city
-	SELECT
-	FROM 
-	WHERE
+	SELECT state,
+		city,
+		COUNT(name) AS Premium_Business_Count,
+		SUM(review_count) AS TotalNumberOfReviews
+	FROM  business
+	WHERE stars = 5
+	GROUP BY city
+	ORDER BY Premium_Business_Count DESC
+	LIMIT 10;
+
+	+-------+------------+------------------------+----------------------+
+	| state | city       | Premium_Business_Count | TotalNumberOfReviews |
+	+-------+------------+------------------------+----------------------+
+	| NV    | Las Vegas  |                    294 |                 4021 |
+	| AZ    | Phoenix    |                    195 |                 2955 |
+	| AZ    | Scottsdale |                    137 |                 2094 |
+	| ON    | Toronto    |                     94 |                  751 |
+	| AZ    | Mesa       |                     68 |                  917 |
+	| NC    | Charlotte  |                     67 |                  584 |
+	| AZ    | Tempe      |                     58 |                  649 |
+	| AZ    | Gilbert    |                     55 |                  464 |
+	| NV    | Henderson  |                     55 |                  743 |
+	| PA    | Pittsburgh |                     55 |                  514 |
+	+-------+------------+------------------------+----------------------+
 -- Finding a set of businesses with the highest and lowest number of ratings for a better picture of review volume
 	SELECT name, review_count
 	FROM business
